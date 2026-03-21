@@ -4,324 +4,275 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sistem Perpustakaan</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box}
+body{margin:0;font-family:'Poppins',sans-serif;background:linear-gradient(rgba(0,0,50,0.6),rgba(0,0,80,0.7)),url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f') no-repeat center/cover;min-height:100vh;display:flex;flex-direction:column}
 
-body{
-margin:0;
-font-family:'Poppins',sans-serif;
-background:linear-gradient(rgba(0,0,50,0.6),rgba(0,0,80,0.7)),
-url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f') no-repeat center/cover;
-min-height:100vh;
-}
+.header{position:fixed;top:0;width:100%;background:rgba(0,0,0,0.6);color:white;padding:10px 20px;display:flex;align-items:center;gap:12px;font-size:18px;font-weight:600;z-index:1000}
+.header img{width:45px}
+.footer{position:fixed;bottom:0;width:100%;background:rgba(0,0,0,0.5);color:white;text-align:center;padding:8px}
+.wrapper{display:flex;margin-top:60px;margin-bottom:40px}
 
-/* HEADER */
-.main-header{
-position:fixed;
-top:0;
-width:100%;
-padding:10px 20px;
-z-index:1000;
-backdrop-filter:blur(10px);
-background:rgba(255,255,255,0.1);
-display:flex;
-align-items:center;
-gap:15px;
-color:white;
-}
+.sidebar{width:220px;background:rgba(0,0,0,0.6);color:white;height:calc(100vh - 100px);padding:20px;position:fixed;top:60px}
+.sidebar button{width:100%;margin:5px 0;padding:10px;border:none;border-radius:10px;background:rgba(255,255,255,0.1);color:white;cursor:pointer}
+.sidebar button:hover{background:rgba(255,255,255,0.3)}
 
-.main-header img{width:50px}
+.main{margin-left:220px;width:100%;padding:20px}
+.container{max-width:1000px;margin:auto;margin-top:20px;padding:20px;color:white}
+.glass{background:rgba(255,255,255,0.15);border-radius:20px;padding:20px}
 
-.main-content{
-margin-top:100px;
-padding-bottom:80px;
-}
+input{width:100%;padding:10px;margin:5px 0;border-radius:10px;border:none}
+button.main-btn{padding:10px 20px;margin-top:10px;border:none;border-radius:10px;background:#003366;color:white;cursor:pointer}
 
-/* FOOTER */
-.main-footer{
-position:fixed;
-bottom:0;
-width:100%;
-text-align:center;
-padding:10px;
-color:white;
-background:rgba(0,0,0,0.3);
-backdrop-filter:blur(10px);
-}
+.status-active{color:#00ff88;font-weight:bold}
+.status-expired{color:#ff4d4d;font-weight:bold}
 
-/* CARD */
-.glass{
-backdrop-filter:blur(15px);
-background:rgba(255,255,255,0.15);
-border-radius:20px;
-border:1px solid rgba(255,255,255,0.3);
-box-shadow:0 8px 30px rgba(0,0,0,0.4);
-}
+table{width:100%;margin-top:15px;border-collapse:collapse}
+th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.2);text-align:center}
 
-.container{
-max-width:1000px;
-margin:30px auto;
-padding:25px;
-color:white;
-text-align:center;
-}
+/* DASHBOARD */
+.icon-big{font-size:60px;text-align:center;margin-bottom:10px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-top:20px}
+.stat-card{background:rgba(255,255,255,0.2);padding:15px;border-radius:15px;text-align:center}
+.stat-card h3{margin:5px 0}
 
-/* INPUT & BUTTON */
-input{
-width:95%;
-padding:10px;
-margin:6px;
-border-radius:10px;
-border:none;
-}
-
-button{
-padding:10px 20px;
-margin:5px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-background:linear-gradient(135deg,#0052cc,#003366);
-color:white;
-}
-
-/* TABLE */
-table{
-width:100%;
-margin-top:15px;
-border-collapse:collapse;
-background:rgba(255,255,255,0.1);
-}
-th,td{
-padding:10px;
-border-bottom:1px solid rgba(255,255,255,0.2);
-}
-
-.status-active{color:#00ff88}
-.status-expired{color:#ff4d4d}
-
-/* MARQUEE */
-.marquee{overflow:hidden}
-.marquee span{
-display:inline-block;
-padding-left:100%;
-animation:marquee 12s linear infinite;
-}
-@keyframes marquee{
-0%{transform:translateX(0)}
-100%{transform:translateX(-100%)}
-}
 </style>
 </head>
 
-<body>
 
-<!-- HEADER -->
-<div class="main-header">
-<img src="logo_mds.png">
-<div>
-<b>MAJLIS DAERAH SIMUNJAN</b><br>
-<small>Sistem Pengurusan Perpustakaan</small>
+
+<div class="header">
+  <img src="logo_mds.png" alt="Logo">
+  <div class="text-container">
+    <div class="title">Portal Sistem Pengurusan Perpustakaan Awam</div>
+    <div class="subtitle">Majlis Daerah Simunjan</div>
+  </div>
 </div>
+
+<div class="wrapper">
+
+<div class="sidebar" id="sidebar" style="display:none">
+<button onclick="showPage('menuPage')">Dashboard</button>
+<button onclick="showPage('daftarPage')">Daftar Ahli</button>
+<button onclick="showPage('semakPage')">Semak Ahli</button>
+<button onclick="showPage('bukuPage')">Carian Buku</button>
+<button onclick="logout()">Log Keluar</button>
 </div>
 
-<div class="main-content">
+<div class="main">
 
-<!-- LOGIN -->
 <div class="container glass" id="loginPage">
 <h2>Log Masuk</h2>
 <input id="user" placeholder="Username">
 <input id="pass" type="password" placeholder="Password">
-<button onclick="login()">Log Masuk</button>
+<button type="button" class="main-btn" onclick="login()">Log Masuk</button>
 </div>
 
-<!-- MENU -->
 <div class="container glass" id="menuPage" style="display:none">
-<h2>Menu Utama</h2>
+<div class="icon-big">📚</div>
 
-<div class="marquee">
-<span>INFO TERKINI: Sistem Perpustakaan Digital Kini Lebih Pantas</span>
+<div id="clock" style="text-align:center;font-size:22px;margin-top:10px;font-weight:600">
+00:00:00
+</div>
+<p style="text-align:center;font-size:18px">
+Selamat Datang ke Portal Sistem Pengurusan Perpustakaan Awam,<br>
+<b>Majlis Daerah Simunjan</b>
+</p>
+
+<div class="stats" id="stats"></div>
 </div>
 
-<br>
-<button onclick="showPage('daftarPage')">Daftar Ahli</button>
-<button onclick="showPage('semakPage')">Semak Ahli</button>
-<button onclick="showPage('bukuPage')">Carian Buku</button>
-
-<br><br>
-<button onclick="showPage('loginPage')">Log Keluar</button>
-</div>
-
-<!-- DAFTAR -->
 <div class="container glass" id="daftarPage" style="display:none">
 <h2>Daftar Ahli</h2>
 <input id="nama" placeholder="Nama">
-<input id="ic" placeholder="No IC 12 digit">
+<input id="ic" placeholder="No IC (contoh: 000000-00-0000)">
 <input id="jantina" placeholder="Jantina" readonly>
+<input id="telefon" placeholder="No Telefon (contoh: 012-3456789)">
 <input id="alamat" placeholder="Alamat">
-
-<button onclick="daftarAhli()">Daftar</button>
+<button type="button" class="main-btn" onclick="daftarAhli()">Daftar</button>
 
 <table id="tableAhli">
-<tr><th>No</th><th>Nama</th><th>IC</th><th>Jantina</th><th>Alamat</th><th>Tarikh</th><th>Luput</th></tr>
+<tr><th>No Ahli</th><th>Nama</th><th>Tarikh Daftar</th><th>Tarikh Luput</th><th>Status</th></tr>
 </table>
-
-<button onclick="showPage('menuPage')">Kembali</button>
 </div>
 
-<!-- SEMAK -->
 <div class="container glass" id="semakPage" style="display:none">
-<h2>Semakan</h2>
+<h2>Semakan Ahli</h2>
 <input id="semakIC" placeholder="Masukkan IC">
-<button onclick="semakAhli()">Semak</button>
+<button type="button" class="main-btn" onclick="semakAhli()">Semak</button>
 <table id="tableSemak"></table>
-<button onclick="showPage('menuPage')">Kembali</button>
 </div>
 
-<!-- BUKU -->
 <div class="container glass" id="bukuPage" style="display:none">
 <h2>Carian Buku</h2>
-<input id="cariBuku" placeholder="Cari buku...">
-<button onclick="cariBuku()">Cari</button>
+<input id="cariBukuInput" placeholder="Cari buku...">
+<button type="button" class="main-btn" onclick="cariBuku()">Cari</button>
 <table id="tableBuku"></table>
-<button onclick="showPage('menuPage')">Kembali</button>
 </div>
 
 </div>
-
-<!-- FOOTER -->
-<div class="main-footer">
-© 2026 Majlis Daerah Simunjan
 </div>
+
+<div class="footer">© 2026 Majlis Daerah Simunjan</div>
 
 <script>
-let ahliList=[];
-let counter=1;
+let ahliList = JSON.parse(localStorage.getItem('ahliList')) || [];
+let counter = ahliList.length + 1;
 
 function showPage(page){
 document.querySelectorAll('.container').forEach(p=>p.style.display='none');
 document.getElementById(page).style.display='block';
+if(page==='daftarPage') loadTable();
+if(page==='menuPage') loadStats();
 }
 
-/* LOGIN */
 function login(){
-let u=document.getElementById('user').value;
-let p=document.getElementById('pass').value;
-
-if(u==="admin" && p==="1234"){
+if(user.value==="admin" && pass.value==="1234"){
+sidebar.style.display='block';
 showPage('menuPage');
-}else{
-alert("Login gagal");
-}
+}else alert("Login gagal");
 }
 
-/* AUTO JANTINA */
-document.getElementById('ic').addEventListener('input', function () {
-    let ic = this.value.replace(/\D/g, ''); // buang semua bukan nombor
+function logout(){sidebar.style.display='none';showPage('loginPage');}
 
-    // limit 12 digit
-    ic = ic.substring(0, 12);
-
-    // format jadi 000000-00-0000
-    let formatted = ic;
-    if (ic.length > 6 && ic.length <= 8)
-        formatted = ic.slice(0, 6) + '-' + ic.slice(6);
-    else if (ic.length > 8)
-        formatted = ic.slice(0, 6) + '-' + ic.slice(6, 8) + '-' + ic.slice(8);
-
-    this.value = formatted;
-
-    // auto jantina
-    if (ic.length === 12) {
-        document.getElementById('jantina').value =
-            ic.slice(-1) % 2 === 0 ? 'Perempuan' : 'Lelaki';
-    }
+// FORMAT IC
+ic.addEventListener('input', function(){
+let val=this.value.replace(/\D/g,'').substring(0,12);
+if(val.length>6) val=val.slice(0,6)+'-'+val.slice(6);
+if(val.length>9) val=val.slice(0,9)+'-'+val.slice(9);
+this.value=val;
+if(val.replace(/\D/g,'').length===12){
+jantina.value=val.slice(-1)%2===0?'Perempuan':'Lelaki';
+}
 });
 
-/* DAFTAR */
+// FORMAT TELEFON
+telefon.addEventListener('input', function(){
+let val=this.value.replace(/\D/g,'').substring(0,11);
+if(val.length>3) val=val.slice(0,3)+'-'+val.slice(3);
+this.value=val;
+});
+
 function daftarAhli(){
+let nama=namaInput();
+let icVal=ic.value;
+let telefonVal=telefon.value;
+let jantinaVal=jantina.value;
 
-let icRaw = ic.replace(/\D/g,'');
-
-if(icRaw.length !== 12){
- alert("IC mesti 12 digit!");
- return;
-}    
-    
-let nama=document.getElementById('nama').value;
-let ic=document.getElementById('ic').value;
-let jantina=document.getElementById('jantina').value;
-let alamat=document.getElementById('alamat').value;
-
-/* TARIKH AUTO */
-let today=new Date();
-let tarikh=today.toISOString().split('T')[0];
+if(!nama||!icVal){alert("Sila isi maklumat");return;}
+if(icVal.replace(/\D/g,'').length!==12){alert("IC mesti 12 digit");return;}
 
 let noAhli='MDSPA'+String(counter).padStart(4,'0');
 counter++;
 
-let tarikhLuput=new Date(today);
-tarikhLuput.setFullYear(tarikhLuput.getFullYear()+1);
-
-let ahli={noAhli,nama,ic,jantina,alamat,tarikh,tarikhLuput};
-ahliList.push(ahli);
-
-let row=`<tr>
-<td>${noAhli}</td>
-<td>${nama}</td>
-<td>${ic}</td>
-<td>${jantina}</td>
-<td>${alamat}</td>
-<td>${tarikh}</td>
-<td>${tarikhLuput.toISOString().split('T')[0]}</td>
-</tr>`;
-
-document.getElementById('tableAhli').innerHTML+=row;
-
-alert("Ahli berjaya didaftarkan!");
-}
-
-/* SEMAK */
-function semakAhli(){
-let ic=document.getElementById('semakIC').value;
-let result=ahliList.find(a=>a.ic===ic);
-let table=document.getElementById('tableSemak');
-
-if(result){
 let today=new Date();
-let status=today>result.tarikhLuput?
-'<span class="status-expired">LUPUT</span>':
-'<span class="status-active">AKTIF</span>';
+let tarikhDaftar=today.toISOString().split('T')[0];
+let expire=new Date(today);
+expire.setFullYear(expire.getFullYear()+1);
+let tarikhLuput=expire.toISOString().split('T')[0];
 
-table.innerHTML=`<tr><th>No</th><th>Nama</th><th>Status</th></tr>
-<tr><td>${result.noAhli}</td><td>${result.nama}</td><td>${status}</td></tr>`;
-}else{
-table.innerHTML="<tr><td>Tiada rekod</td></tr>";
-}
+ahliList.push({noAhli,nama,ic:icVal,telefon:telefonVal,jantina:jantinaVal,tarikhDaftar,tarikhLuput});
+localStorage.setItem('ahliList',JSON.stringify(ahliList));
+
+loadTable();
+loadStats();
+alert("Berjaya daftar");
 }
 
-/* BUKU */
+function namaInput(){return document.getElementById('nama').value.trim();}
+
+function getStatus(luput){
+let today=new Date().toISOString().split('T')[0];
+return today>luput?'expired':'active';
+}
+
+function renderStatus(s){
+return s==='active'?'<span class="status-active">AKTIF</span>':'<span class="status-expired">SUDAH LUPUT</span>';
+}
+
+function loadTable(){
+let t=document.getElementById('tableAhli');
+t.innerHTML='<tr><th>No Ahli</th><th>Nama</th><th>Tarikh Daftar</th><th>Tarikh Luput</th><th>Status</th></tr>';
+
+ahliList.forEach(a=>{
+let s=getStatus(a.tarikhLuput);
+t.innerHTML+=`<tr>
+<td>${a.noAhli}</td>
+<td>${a.nama}</td>
+<td>${a.tarikhDaftar}</td>
+<td>${a.tarikhLuput}</td>
+<td>${renderStatus(s)}</td>
+</tr>`;
+});
+}
+
+function semakAhli(){
+let icVal=document.getElementById('semakIC').value;
+let r=ahliList.find(a=>a.ic===icVal);
+let t=document.getElementById('tableSemak');
+
+if(r){
+let s=getStatus(r.tarikhLuput);
+t.innerHTML=`<tr><th>No Ahli</th><th>Nama</th><th>Status</th><th>Tarikh Luput</th></tr>
+<tr>
+<td>${r.noAhli}</td>
+<td>${r.nama}</td>
+<td>${renderStatus(s)}</td>
+<td>${r.tarikhLuput}</td>
+</tr>`;
+}else t.innerHTML='Tiada rekod';
+}
+
+function loadStats(){
+let total=ahliList.length;
+let aktif=ahliList.filter(a=>getStatus(a.tarikhLuput)==='active').length;
+let luput=total-aktif;
+
+let s=document.getElementById('stats');
+s.innerHTML=`
+<div class='stat-card'><h3>${total}</h3><small>Jumlah Ahli</small></div>
+<div class='stat-card'><h3 class='status-active'>${aktif}</h3><small>Aktif</small></div>
+<div class='stat-card'><h3 class='status-expired'>${luput}</h3><small>Sudah Luput</small></div>
+`;
+}
+
 let bukuList=[
-{tajuk:"Rekabentuk Sistem",penulis:"Ahmad"},
-{tajuk:"JavaScript Asas",penulis:"Ali"},
-{tajuk:"HTML CSS",penulis:"Siti"}
+{tajuk:'Rekabentuk Sistem',penulis:'Ahmad'},
+{tajuk:'JavaScript Asas',penulis:'Ali'},
+{tajuk:'HTML CSS',penulis:'Siti'}
 ];
 
 function cariBuku(){
-let key=document.getElementById('cariBuku').value.toLowerCase();
-let table=document.getElementById('tableBuku');
+let key=document.getElementById('cariBukuInput').value.toLowerCase();
+let t=document.getElementById('tableBuku');
+t.innerHTML='<tr><th>Tajuk</th><th>Penulis</th></tr>';
 
-table.innerHTML="<tr><th>Tajuk</th><th>Penulis</th></tr>";
-
-bukuList
-.filter(b=>b.tajuk.toLowerCase().includes(key))
-.forEach(b=>{
-table.innerHTML+=`<tr><td>${b.tajuk}</td><td>${b.penulis}</td></tr>`;
-});
+bukuList.filter(b=>b.tajuk.toLowerCase().includes(key))
+.forEach(b=>{t.innerHTML+=`<tr><td>${b.tajuk}</td><td>${b.penulis}</td></tr>`});
 }
+
+function updateClock(){
+let now = new Date();
+
+let h = String(now.getHours()).padStart(2,'0');
+let m = String(now.getMinutes()).padStart(2,'0');
+let s = String(now.getSeconds()).padStart(2,'0');
+
+let time = h + ":" + m + ":" + s;
+
+let clock = document.getElementById('clock');
+if(clock){
+clock.innerText = time;
+}
+}
+
+// update setiap saat
+setInterval(updateClock,1000);
+updateClock();
+
+loadTable();
 </script>
 
 </body>
