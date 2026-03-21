@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Sistem Pengurusan Perpustakaan</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body {
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(rgba(0,0,50,0.6),rgba(0,0,80,0.7)),
+    url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f') no-repeat center/cover;
+    min-height:100vh;
+}
+
+.glass {
+    backdrop-filter: blur(15px);
+    background: rgba(255,255,255,0.15);
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.3);
+    box-shadow:0 8px 30px rgba(0,0,0,0.4);
+}
+
+.container {
+    max-width:1000px;
+    margin:30px auto;
+    padding:25px;
+    color:white;
+    text-align:center;
+}
+
+header {
+    margin-bottom:15px;
+}
+
+header img {
+    width:70px;
+}
+
+header h1 {
+    font-size:20px;
+    margin:10px 0;
+    font-weight:600;
+}
+
+h2 {margin-bottom:15px}
+
+button {
+    padding:10px 20px;
+    margin:5px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:linear-gradient(135deg,#0052cc,#003366);
+    color:white;
+    font-weight:500;
+    transition:0.3s;
+}
+button:hover {transform:scale(1.05)}
+
+input, select {
+    width:95%;
+    padding:10px;
+    margin:6px;
+    border-radius:10px;
+    border:none;
+    outline:none;
+}
+
+table {
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+    background:rgba(255,255,255,0.1);
+    border-radius:10px;
+    overflow:hidden;
+}
+th, td {
+    padding:10px;
+    border-bottom:1px solid rgba(255,255,255,0.2);
+}
+
+.marquee {
+    overflow:hidden;
+    white-space:nowrap;
+}
+.marquee span {
+    display:inline-block;
+    padding-left:100%;
+    animation:marquee 12s linear infinite;
+}
+@keyframes marquee {
+    0% {transform:translateX(0)}
+    100% {transform:translateX(-100%)}
+}
+
+.status-active {color:#00ff88;font-weight:bold}
+.status-expired {color:#ff4d4d;font-weight:bold}
+
+footer {
+    text-align:center;
+    padding:10px;
+    color:white;
+    margin-top:20px;
+}
+
+@media(max-width:600px){
+    .container {margin:15px}
+}
+</style>
+</head>
+<body>
+
+<div class="container glass" id="loginPage">
+<header>
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Coat_of_arms_of_Malaysia.svg">
+<h1>PORTAL SISTEM PENGURUSAN PERPUSTAKAAN<br>MAJLIS DAERAH SIMUNJAN</h1>
+</header>
+<h2>Log Masuk</h2>
+<input type="text" placeholder="Username">
+<input type="password" placeholder="Password">
+<button onclick="showPage('menuPage')">Log Masuk</button>
+</div>
+
+<div class="container glass" id="menuPage" style="display:none">
+<header>
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Coat_of_arms_of_Malaysia.svg">
+<h1>MENU UTAMA</h1>
+</header>
+<div class="marquee"><span>INFO TERKINI: Sistem Perpustakaan Digital Kini Lebih Pantas & Efisien</span></div>
+<br>
+<button onclick="showPage('daftarPage')">Daftar Ahli Baru</button>
+<button onclick="showPage('semakPage')">Semakan Keahlian</button>
+<button onclick="showPage('bukuPage')">Carian Buku</button>
+
+<h3>Makluman & Aktiviti</h3>
+<table>
+<tr><th>Makluman Rasmi</th><th>Aktiviti</th></tr>
+<tr><td>Perpustakaan Ditutup Cuti Umum</td><td>Program Literasi</td></tr>
+</table>
+<br>
+<button onclick="showPage('loginPage')">Kembali</button>
+</div>
+
+<div class="container glass" id="daftarPage" style="display:none">
+<h2>Daftar Ahli</h2>
+<input id="nama" placeholder="Nama Penuh">
+<input id="ic" placeholder="No Kad Pengenalan (12 digit)">
+<input id="jantina" placeholder="Jantina (Auto)" readonly>
+<input id="alamat" placeholder="Alamat Rumah">
+<input id="email" placeholder="Email">
+<input id="telefon" placeholder="No Telefon">
+<input id="tarikh" type="date">
+<button onclick="daftarAhli()">Daftar</button>
+
+<table id="tableAhli">
+<tr><th>No Ahli</th><th>Nama</th><th>IC</th><th>Jantina</th><th>Alamat</th><th>Tarikh Daftar</th><th>Tarikh Luput</th></tr>
+</table>
+<button onclick="showPage('menuPage')">Kembali</button>
+</div>
+
+<div class="container glass" id="semakPage" style="display:none">
+<h2>Semakan Keahlian</h2>
+<input id="semakIC" placeholder="Masukkan No IC">
+<button onclick="semakAhli()">SEMAK</button>
+<table id="tableSemak"></table>
+<button onclick="showPage('menuPage')">Kembali</button>
+</div>
+
+<div class="container glass" id="bukuPage" style="display:none">
+<h2>Carian Buku</h2>
+<input placeholder="Cari buku...">
+<button onclick="loading()">Cari</button>
+<div id="loading" style="display:none">🔄 Sedang memuatkan...</div>
+<table>
+<tr><th>Tajuk</th><th>Penulis</th></tr>
+<tr><td>Rekabentuk Sistem</td><td>Ahmad</td></tr>
+</table>
+<button onclick="showPage('menuPage')">Kembali</button>
+</div>
+
+<footer>
+© Majlis Daerah Simunjan | Sistem Perpustakaan
+</footer>
+
+<script>
+let ahliList=[];
+let counter=1;
+
+function showPage(page){
+ document.querySelectorAll('.container').forEach(p=>p.style.display='none');
+ document.getElementById(page).style.display='block';
+}
+
+document.getElementById('ic').addEventListener('input',function(){
+ let ic=this.value;
+ if(ic.length>=12){
+  let jantina=ic.slice(-1)%2===0?'Perempuan':'Lelaki';
+  document.getElementById('jantina').value=jantina;
+ }
+});
+
+function daftarAhli(){
+ let nama=document.getElementById('nama').value;
+ let ic=document.getElementById('ic').value;
+ let jantina=document.getElementById('jantina').value;
+ let alamat=document.getElementById('alamat').value;
+ let tarikh=document.getElementById('tarikh').value;
+
+ let noAhli='MDSPA'+String(counter).padStart(4,'0');
+ counter++;
+
+ let tarikhLuput=new Date(tarikh);
+ tarikhLuput.setFullYear(tarikhLuput.getFullYear()+1);
+
+ let ahli={noAhli,nama,ic,jantina,alamat,tarikh,tarikhLuput};
+ ahliList.push(ahli);
+
+ let row=`<tr><td>${noAhli}</td><td>${nama}</td><td>${ic}</td><td>${jantina}</td><td>${alamat}</td><td>${tarikh}</td><td>${tarikhLuput.toISOString().split('T')[0]}</td></tr>`;
+ document.getElementById('tableAhli').innerHTML+=row;
+}
+
+function semakAhli(){
+ let ic=document.getElementById('semakIC').value;
+ let result=ahliList.find(a=>a.ic===ic);
+ let table=document.getElementById('tableSemak');
+
+ if(result){
+  let today=new Date();
+  let status=today>result.tarikhLuput?
+  '<span class="status-expired">SUDAH LUPUT</span>':
+  '<span class="status-active">AKTIF</span>';
+
+  table.innerHTML=`<tr><th>No</th><th>Nama</th><th>IC</th><th>Jantina</th><th>Alamat</th><th>Tarikh</th><th>Luput</th><th>Status</th></tr>
+  <tr><td>${result.noAhli}</td><td>${result.nama}</td><td>${result.ic}</td><td>${result.jantina}</td><td>${result.alamat}</td><td>${result.tarikh}</td><td>${result.tarikhLuput.toISOString().split('T')[0]}</td><td>${status}</td></tr>`;
+ } else {
+  table.innerHTML='<tr><td>Tiada rekod ditemui</td></tr>';
+ }
+}
+
+function loading(){
+ let load=document.getElementById('loading');
+ load.style.display='block';
+ setTimeout(()=>load.style.display='none',2000);
+}
+</script>
+
+</body>
+</html>
