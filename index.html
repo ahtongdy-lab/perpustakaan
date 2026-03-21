@@ -38,6 +38,78 @@ th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.2);text-align:cent
 .stat-card{background:rgba(255,255,255,0.2);padding:15px;border-radius:15px;text-align:center}
 .stat-card h3{margin:5px 0}
 
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media (max-width:768px){
+
+/* HEADER */
+.header{
+flex-direction:column;
+align-items:flex-start;
+font-size:14px;
+}
+
+/* SIDEBAR JADI TOP MENU */
+.sidebar{
+position:fixed;
+top:60px;
+left:0;
+width:100%;
+height:auto;
+display:none;
+flex-direction:column;
+z-index:999;
+}
+
+/* BUTTON MENU */
+.menu-toggle{
+position:fixed;
+top:65px;
+left:10px;
+background:#003366;
+color:white;
+padding:8px 12px;
+border-radius:8px;
+cursor:pointer;
+z-index:1001;
+}
+
+/* MAIN FULL WIDTH */
+.main{
+margin-left:0;
+padding:15px;
+}
+
+/* CONTAINER */
+.container{
+padding:15px;
+margin-top:10px;
+}
+
+/* CLOCK */
+#clock{
+font-size:28px !important;
+}
+
+/* TABLE SCROLL */
+table{
+display:block;
+overflow-x:auto;
+white-space:nowrap;
+}
+
+/* INPUT */
+input{
+font-size:14px;
+}
+
+/* BUTTON */
+button.main-btn{
+width:100%;
+}
+}
+
 </style>
 </head>
 
@@ -129,7 +201,7 @@ if(page==='menuPage') loadStats();
 }
 
 function login(){
-if(user.value==="1" && pass.value==="1"){
+if(user.value==="admin" && pass.value==="1234"){
 sidebar.style.display='block';
 showPage('menuPage');
 }else alert("Login gagal");
@@ -273,6 +345,8 @@ setInterval(updateClock,1000);
 updateClock();
 
 loadTable();
+
+
 </script>
 
 </body>
