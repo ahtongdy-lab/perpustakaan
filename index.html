@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Sistem Perpustakaan MDS</title>
+<title>Sistem Perpustakaan</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -13,7 +12,7 @@
 body{
 margin:0;
 font-family:'Poppins',sans-serif;
-background:linear-gradient(rgba(0,0,50,0.6),rgba(0,0,80,0.7)),
+background:linear-gradient(rgba(0,0,50,0.7),rgba(0,0,80,0.8)),
 url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f') center/cover no-repeat;
 }
 
@@ -21,119 +20,109 @@ url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f') center/cover
 .header{
 position:fixed;
 top:0;width:100%;
-background:rgba(0,0,0,0.8);
+background:rgba(0,0,0,0.7);
 color:white;
 padding:10px;
 display:flex;
+justify-content:center;
 align-items:center;
 gap:10px;
-justify-content:center;
 z-index:1000;
 }
 .header img{width:45px}
 
-/* MENU */
-.menu-toggle{
-position:fixed;
-top:70px;left:10px;
-background:#003366;color:white;
-padding:12px;border-radius:10px;
-cursor:pointer;
-display:none;
-}
-
+/* SIDEBAR */
 .sidebar{
+width:220px;
+background:rgba(0,0,0,0.65);
 position:fixed;
-top:120px;
-left:0;
-width:240px;
-background:rgba(0,0,0,0.8);
+top:70px;
+bottom:0;
 padding:10px;
 display:none;
 }
-
 .sidebar button{
 width:100%;
-padding:15px;
 margin:6px 0;
+padding:12px;
 border:none;
 border-radius:12px;
 background:rgba(255,255,255,0.1);
 color:white;
-font-size:15px;
 }
 
 /* MAIN */
-.wrapper{margin-top:90px}
-.container{
-max-width:1100px;
-margin:auto;
-margin-top:20px;
+.main{
+margin-left:230px;
+margin-top:80px;
 padding:20px;
-color:white;
-border-radius:20px;
-background:rgba(255,255,255,0.15);
-backdrop-filter:blur(12px);
+display:flex;
+justify-content:center;
 }
 
-/* DASHBOARD */
-.dashboard{
+/* CONTAINER */
+.container{
+width:100%;
+max-width:1100px;
+background:rgba(255,255,255,0.12);
+padding:25px;
+border-radius:20px;
+color:white;
 text-align:center;
 }
-.big-clock{
-font-size:42px;
-font-weight:bold;
-margin:10px 0;
-}
-
-.stats{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-gap:15px;
-margin-top:20px;
-}
-
-.stat{
-padding:20px;
-border-radius:15px;
-font-weight:bold;
-}
-
-.blue{background:#0066cc}
-.green{background:#00aa66}
-.red{background:#cc0033}
-
-/* TABLE */
-table{width:100%;margin-top:10px;border-collapse:collapse}
-th,td{padding:8px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.2)}
-
-.status-active{color:#00ff88;font-weight:bold}
-.status-expired{color:#ff4d4d;font-weight:bold}
-
-.avatar{width:50px;height:50px;border-radius:50%}
 
 /* INPUT */
 input{
 width:100%;
 padding:10px;
-margin:5px 0;
+margin:6px 0;
 border-radius:10px;
 border:none;
 }
 
+/* BUTTON */
 button{
-width:100%;
-padding:10px;
-margin-top:5px;
+padding:8px 12px;
 border:none;
-border-radius:10px;
-background:#003366;
-color:white;
+border-radius:8px;
 cursor:pointer;
 }
+.main-btn{
+width:100%;
+margin-top:8px;
+background:#003366;
+color:white;
+}
 
-.back{background:#555}
+/* TABLE */
+.table-wrap{overflow-x:auto}
+table{width:100%;margin-top:10px;border-collapse:collapse;min-width:1000px}
+th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.2)}
 
+/* IMAGE */
+.avatar{width:55px;height:55px;border-radius:50%;object-fit:cover}
+
+/* STATUS */
+.status-active{color:#00ff88;font-weight:bold}
+.status-expired{color:#ff4d4d;font-weight:bold}
+
+/* DASHBOARD */
+.welcome{font-size:20px;margin-bottom:10px}
+#clock{font-size:34px;font-weight:bold}
+#dateBox{font-size:20px;margin-bottom:10px}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px}
+.stat-card{padding:20px;border-radius:15px;font-weight:bold}
+.stat-blue{background:#0066cc}
+.stat-green{background:#00aa66}
+.stat-red{background:#cc0033}
+
+/* MOBILE */
+@media(max-width:768px){
+.main{margin-left:0}
+.sidebar{width:100%}
+}
 </style>
 </head>
 
@@ -141,30 +130,34 @@ cursor:pointer;
 
 <div class="header">
 <img src="logo_mds.png">
-<div>Sistem Perpustakaan Awam Majlis Daerah Simunjan</div>
+<div>Perpustakaan Awam Majlis Daerah Simunjan</div>
 </div>
 
-<div class="menu-toggle" id="menuBtn" onclick="toggleMenu()">☰ MENU</div>
-<div class="sidebar" id="sidebar"></div>
+<div class="sidebar" id="sidebar">
+<button onclick="showPage('menuPage')">Dashboard</button>
+<button onclick="showPage('daftarPage')" id="btnAdmin">Daftar Ahli</button>
+<button onclick="showPage('semakPage')">Semakan Ahli</button>
+<button onclick="logout()">Log Keluar</button>
+</div>
 
-<div class="wrapper">
+<div class="main">
 
 <!-- LOGIN -->
 <div class="container" id="loginPage">
-<h2>Log Masuk Sistem Perpustakaan</h2>
-<input id="user" placeholder="Masukkan Username">
-<input id="pass" type="password" placeholder="Masukkan Password">
-<button onclick="login()">Login</button>
+<h2>Log Masuk Sistem</h2>
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button class="main-btn" onclick="login()">Log Masuk</button>
 </div>
 
 <!-- DASHBOARD -->
-<div class="container dashboard" id="menuPage" style="display:none">
-<h2>Selamat Datang ke Perpustakaan Awam MDS</h2>
+<div class="container" id="menuPage" style="display:none">
+<div class="welcome">Selamat Datang Ke Perpustakaan Awam Majlis Daerah Simunjan</div>
 
-<div class="big-clock" id="clock"></div>
-<div id="date"></div>
+<div id="clock"></div>
+<div id="dateBox"></div>
 
-<div class="stats" id="stats"></div>
+<div id="stats"></div>
 </div>
 
 <!-- DAFTAR -->
@@ -173,117 +166,89 @@ cursor:pointer;
 
 <input id="nama" placeholder="Nama">
 <input id="ic" placeholder="000000-00-0000">
-<input id="jantina" placeholder="Jantina" readonly>
+<input id="jantina" readonly placeholder="Jantina">
 <input id="telefon" placeholder="012-3456789">
 <input id="alamat" placeholder="Alamat">
 <input type="file" id="gambar">
 
-<button onclick="daftarAhli()">Daftar</button>
-<button class="back" onclick="nav('menuPage')">Kembali</button>
+<button class="main-btn" onclick="daftarAhli()">Daftar</button>
 
+<div class="table-wrap">
 <table id="tableAhli"></table>
+</div>
 </div>
 
 <!-- SEMAK -->
 <div class="container" id="semakPage" style="display:none">
 <h2>Semakan Ahli</h2>
 <input id="semakIC">
-<button onclick="semakAhli()">Semak</button>
-<button class="back" onclick="nav('menuPage')">Kembali</button>
-<div id="hasilSemak"></div>
+<button class="main-btn" onclick="semakAhli()">Semak</button>
+
+<div class="table-wrap">
+<table id="tableSemak"></table>
+</div>
 </div>
 
 </div>
 
 <script>
 let ahliList=JSON.parse(localStorage.getItem('ahliList'))||[];
-let isAdmin=false;
-
-/* DATE */
-function formatDate(d){
-return d.toLocaleDateString('ms-MY');
-}
+let role="user";
 
 /* LOGIN */
 function login(){
 if(user.value==="admin"&&pass.value==="1234"){
-isAdmin=true;
+role="admin";btnAdmin.style.display='block';
 }else{
-isAdmin=false;
+role="user";btnAdmin.style.display='none';
 }
-
-menuBtn.style.display='block';
-loadMenu();
+sidebar.style.display='block';
 showPage('menuPage');
 }
 
-/* MENU */
-function loadMenu(){
-sidebar.innerHTML=`
-<button onclick="nav('menuPage')">Dashboard</button>
-${isAdmin?'<button onclick="nav(\'daftarPage\')">Daftar Ahli</button>':''}
-<button onclick="nav('semakPage')">Semakan Ahli</button>
-<button onclick="logout()">Logout</button>`;
-}
-
-function toggleMenu(){
-sidebar.style.display=sidebar.style.display==='block'?'none':'block';
-}
-
-function nav(p){
-showPage(p);
-sidebar.style.display='none';
-}
-
+/* LOGOUT */
 function logout(){
 sidebar.style.display='none';
-menuBtn.style.display='none';
 showPage('loginPage');
 }
 
 /* PAGE */
 function showPage(p){
-document.querySelectorAll('.container').forEach(c=>c.style.display='none');
+document.querySelectorAll('.container').forEach(x=>x.style.display='none');
 document.getElementById(p).style.display='block';
-loadTable();
-loadStats();
+if(p==='daftarPage')loadTable();
+if(p==='menuPage')loadStats();
 }
 
-/* IC */
-ic.addEventListener('input',()=>{
-let v=ic.value.replace(/\D/g,'').slice(0,12);
+/* IC FORMAT */
+ic.addEventListener('input',function(){
+let v=this.value.replace(/\D/g,'').substring(0,12);
 if(v.length>6)v=v.slice(0,6)+'-'+v.slice(6);
 if(v.length>9)v=v.slice(0,9)+'-'+v.slice(9);
-ic.value=v;
-jantina.value=v.length===14?(parseInt(v.slice(-1))%2===0?'Perempuan':'Lelaki'):'';
+this.value=v;
+jantina.value=v.slice(-1)%2===0?'Perempuan':'Lelaki';
 });
 
 /* TELEFON */
-telefon.addEventListener('input',()=>{
-let v=telefon.value.replace(/\D/g,'').slice(0,11);
+telefon.addEventListener('input',function(){
+let v=this.value.replace(/\D/g,'').substring(0,11);
 if(v.length>3)v=v.slice(0,3)+'-'+v.slice(3);
-telefon.value=v;
+this.value=v;
 });
 
-/* STATUS */
-function getStatus(l){
-return new Date()>new Date(l)?'expired':'active';
-}
+/* DATE */
+function formatDate(d){return d.toISOString().split('T')[0];}
 
 /* DAFTAR */
 function daftarAhli(){
-if(!isAdmin)return;
-
-if(ahliList.find(a=>a.ic===ic.value)){
-alert("IC sudah wujud");return;
-}
-
-let today=new Date();
-let exp=new Date();
-exp.setFullYear(exp.getFullYear()+1);
+if(role!=="admin")return;
 
 let reader=new FileReader();
+let file=gambar.files[0];
+
 reader.onload=function(){
+let today=new Date();
+let exp=new Date();exp.setFullYear(exp.getFullYear()+1);
 
 ahliList.push({
 nama:nama.value,
@@ -291,31 +256,35 @@ ic:ic.value,
 jantina:jantina.value,
 telefon:telefon.value,
 alamat:alamat.value,
-gambar:reader.result||'',
-daftar:formatDate(today),
-luput:formatDate(exp)
+gambar:reader.result,
+tarikhDaftar:formatDate(today),
+tarikhLuput:formatDate(exp)
 });
 
 localStorage.setItem('ahliList',JSON.stringify(ahliList));
-loadTable();
+loadTable();loadStats();
 };
 
-if(gambar.files[0])reader.readAsDataURL(gambar.files[0]);
-else reader.onload();
+if(file)reader.readAsDataURL(file);
 }
 
-/* TABLE */
+/* STATUS */
+function getStatus(l){
+return formatDate(new Date())>l?'expired':'active';
+}
+
+/* TABLE DAFTAR */
 function loadTable(){
-if(!isAdmin)return;
+if(role!=="admin")return;
 
 tableAhli.innerHTML=`<tr>
 <th>Gambar</th><th>Nama</th><th>IC</th><th>Jantina</th>
 <th>Telefon</th><th>Alamat</th>
-<th>Daftar</th><th>Luput</th><th>Status</th><th>Aksi</th>
+<th>Daftar</th><th>Luput</th><th>Status</th>
 </tr>`;
 
-ahliList.forEach((a,i)=>{
-let s=getStatus(a.luput);
+ahliList.forEach(a=>{
+let s=getStatus(a.tarikhLuput);
 
 tableAhli.innerHTML+=`
 <tr>
@@ -325,69 +294,60 @@ tableAhli.innerHTML+=`
 <td>${a.jantina}</td>
 <td>${a.telefon}</td>
 <td>${a.alamat}</td>
-<td>${a.daftar}</td>
-<td>${a.luput}</td>
-<td>${s==='active'
-?'<span class="status-active">AKTIF</span>'
-:'<span class="status-expired">LUPUT</span>'}</td>
-<td>
-${isAdmin?`
-<button onclick="deleteAhli(${i})">Delete</button>`:''}
-</td>
+<td>${a.tarikhDaftar}</td>
+<td>${a.tarikhLuput}</td>
+<td class="${s==='active'?'status-active':'status-expired'}">${s==='active'?'AKTIF':'LUPUT'}</td>
 </tr>`;
 });
-}
-
-/* DELETE */
-function deleteAhli(i){
-if(confirm("Padam ahli?")){
-ahliList.splice(i,1);
-localStorage.setItem('ahliList',JSON.stringify(ahliList));
-loadTable();
-}
 }
 
 /* SEMAK */
 function semakAhli(){
 let r=ahliList.find(a=>a.ic===semakIC.value);
+if(!r){tableSemak.innerHTML="Tiada rekod";return;}
 
-if(!r){hasilSemak.innerHTML="Tiada rekod";return;}
+let s=getStatus(r.tarikhLuput);
 
-let s=getStatus(r.luput);
-
-hasilSemak.innerHTML=`
-<div class="container">
-<img src="${r.gambar||''}" class="avatar">
-<h3>${r.nama}</h3>
-<p>IC: ${r.ic}</p>
-<p>Telefon: ${r.telefon}</p>
-<p>Alamat: ${r.alamat}</p>
-<p>Jantina: ${r.jantina}</p>
-<p>Tarikh Daftar: ${r.daftar}</p>
-<p>Tarikh Luput: ${r.luput}</p>
-<p class="${s==='active'?'status-active':'status-expired'}">
-${s==='active'?'AKTIF':'LUPUT'}
-</p>
-</div>`;
+tableSemak.innerHTML=`<tr>
+<th>Gambar</th><th>Nama</th><th>IC</th><th>Jantina</th>
+<th>Telefon</th><th>Alamat</th>
+<th>Daftar</th><th>Luput</th><th>Status</th>
+</tr>
+<tr>
+<td><img src="${r.gambar||''}" class="avatar"></td>
+<td>${r.nama}</td>
+<td>${r.ic}</td>
+<td>${r.jantina}</td>
+<td>${r.telefon}</td>
+<td>${r.alamat}</td>
+<td>${r.tarikhDaftar}</td>
+<td>${r.tarikhLuput}</td>
+<td class="${s==='active'?'status-active':'status-expired'}">${s==='active'?'AKTIF':'LUPUT'}</td>
+</tr>`;
 }
 
-/* STATS */
+/* DASHBOARD */
 function loadStats(){
 let total=ahliList.length;
-let aktif=ahliList.filter(a=>getStatus(a.luput)==='active').length;
+let aktif=ahliList.filter(a=>getStatus(a.tarikhLuput)==='active').length;
 let luput=total-aktif;
 
 stats.innerHTML=`
-<div class="stat blue">Jumlah<br>${total}</div>
-<div class="stat green">Aktif<br>${aktif}</div>
-<div class="stat red">Luput<br>${luput}</div>
-`;
+<div class="stats-grid">
+<div class="stat-card stat-blue">Jumlah ${total}</div>
+<div class="stat-card stat-green">Aktif ${aktif}</div>
+<div class="stat-card stat-red">Luput ${luput}</div>
+</div>`;
 }
 
-/* CLOCK */
+/* CLOCK + DATE */
 setInterval(()=>{
-clock.innerText=new Date().toLocaleTimeString('ms-MY');
-date.innerText=new Date().toLocaleDateString('ms-MY',{weekday:'long'});
+let now=new Date();
+clock.innerText=now.toLocaleTimeString();
+
+let hari=now.toLocaleDateString('ms-MY',{weekday:'long'});
+let tarikh=now.toLocaleDateString('ms-MY');
+dateBox.innerText=hari.toUpperCase()+" | "+tarikh;
 },1000);
 </script>
 
