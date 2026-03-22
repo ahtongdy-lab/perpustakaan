@@ -369,6 +369,61 @@ total.innerText=data.length
 aktif.innerText=data.filter(d=>status(d.luput)=='ACTIVE').length
 tamat.innerText=data.filter(d=>status(d.luput)=='EXPIRED').length
 }
+const API_URL = "https://script.google.com/macros/s/AKfycbxvXeCHPltBEXIVCOq8pKg15jB2lWbAq8YDOmlfm8fDpMssse_ldhViQfy1B4nH_6uRUw/exec"
+
+/* LOAD DATA DARI GOOGLE SHEET */
+async function loadData(){
+let res = await fetch(API_URL)
+let json = await res.json()
+data = json
+render()
+updateStat()
+}
+  
+/* SUBMIT KE GOOGLE SHEET */
+form.onsubmit = async e=>{
+e.preventDefault()
+
+let now=new Date()
+let exp=new Date();exp.setFullYear(exp.getFullYear()+1)
+
+let ahli={
+id:generateID(),
+nama:nama.value,
+ic:ic.value,
+jantina:jantina.value,
+phone:phone.value,
+alamat:alamat.value,
+poskod:poskod.value,
+bandar:bandar.value,
+negeri:negeri.value,
+gambar:imgData,
+tarikhDaftar:now.toISOString(),
+luput:exp.toISOString()
+}
+
+/* POST KE GOOGLE SHEET */
+await fetch(API_URL,{
+method:"POST",
+body:JSON.stringify(ahli)
+})
+
+showModal(`
+<h3>Pendaftaran Berjaya</h3>
+${ahli.gambar?`<img src="${ahli.gambar}" class="preview">`:''}
+<p>${ahli.id}</p>
+<p>${ahli.nama}</p>
+<p>${formatTarikh(ahli.tarikhDaftar)}</p>
+`)
+
+/* RELOAD DATA */
+loadData()
+form.reset()
+imgData=""
+}
+
+/* AUTO LOAD */
+loadData()
 
 render();updateStat()
 
